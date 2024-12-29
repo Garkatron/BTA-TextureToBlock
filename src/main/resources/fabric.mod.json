@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "examplemod",
+  "version": "${version}",
+
+  "name": "name",
+  "description": "Please change this shit...",
+  "authors": [
+    "@yourName"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+	"icon": "icon.png",
+  "license": "CC0-1.0",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "deus.examplemod.ExampleMod"
+    ],
+		"beforeGameStart": [
+          "deus.examplemod.ExampleMod"
+		],
+		"afterGameStart": [
+          "deus.examplemod.ExampleMod"
+		],
+		"recipesReady": [
+          "deus.examplemod.ExampleMod"
+		]
+	},
+  "mixins": [
+    "examplemod.mixins.json"
+  ],
+
+  "depends": {
+		"minecraft": "^7.2-beta",
+    "fabricloader": ">=0.15.5"
+  },
+  "suggests": {
+  }
+}
