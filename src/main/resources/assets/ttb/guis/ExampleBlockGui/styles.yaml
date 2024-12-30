@@ -1,0 +1,14 @@
+SharedProperties:
+  backgroundColor: transparent
+
+Select:
+  - at: button
+    width: 64px
+    height: 20px
+
+  - at: $backButton
+    selfPlacement: BOTTOM_RIGHT
+
+  - at: $test
+    backgroundColor: "FF00FF"
+    height: 100%

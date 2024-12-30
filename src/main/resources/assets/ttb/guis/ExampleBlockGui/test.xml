@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<root xmlns="GUI-LIBRARY-HTML-SCHEMA">
+
+    <link src="/assets/ttb/guis/ExampleBlockGui/styles.yaml"/>
+
+    <body>
+        <scrollableLayout id="dadada">
+            <layout direction="horizontal">
+                <button id="test">
+                    <label>
+                        MakeBlock
+                    </label>
+                </button>
+                <button>
+                    <label>
+                        Export
+                    </label>
+                </button>
+                <button>
+                    <label>
+                        Import
+                    </label>
+                </button>
+            </layout>
+        </scrollableLayout>
+    </body>
+
+</root>

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "ttb",
   "version": "${version}",
 
-  "name": "name",
+  "name": "Deus",
   "description": "Please change this shit...",
   "authors": [
-    "@yourName"
+    "@Deus"
   ],
   "contact": {
     "homepage": "",
@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "deus.examplemod.ExampleMod"
+      "deus.ttb.TTB"
     ],
 		"beforeGameStart": [
-          "deus.examplemod.ExampleMod"
+          "deus.ttb.TTB"
 		],
 		"afterGameStart": [
-          "deus.examplemod.ExampleMod"
+          "deus.ttb.TTB"
 		],
 		"recipesReady": [
-          "deus.examplemod.ExampleMod"
+          "deus.ttb.TTB"
 		]
 	},
   "mixins": [
-    "examplemod.mixins.json"
+		"ttb.mixins.json"
   ],
 
   "depends": {

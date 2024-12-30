@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "deus.ttb.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "AtlasSticherMixin",
+    "EntityPlayerMPMixin",
+    "EntityPlayerSPMixin",
+    "NamespaceIDMixin",
+    "TextureRegistryMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
