@@ -2,7 +2,7 @@ package deus.ttb.block;
 
 import deus.builib.gssl.Signal;
 import deus.ttb.TTB;
-import deus.ttb.guis.supercraftingtable.ExampleBlock;
+import deus.ttb.guis.BlockBuilder.ExampleBlock;
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.block.tag.BlockTags;
 import net.minecraft.core.sound.BlockSound;
@@ -38,7 +38,9 @@ public class TTBBlocks {
 		exampleBlock = make(
 			stoneBlockBuilder
 				.setTextures(TTB.MOD_ID+":block/buildingTable/side")
-				.setTopTexture("$ttb:block/C¿\\Users\\masit\\IdeaProjects\\BTA-TextureToBlock\\src\\main\\resources\\assets\\ttb\\textures\\block\\buildingTable\\top.png")
+				// $ttb:block/C¿\Users\masit\IdeaProjects\BTA-TextureToBlock\src\main\resources\assets\ttb\textures\block\buildingTable\top.png
+				// ttb:block/&../run/TTB/ttb/bottom.png
+				.setTopTexture(TTB.MOD_ID+":block/buildingTable/top")
 				.setNorthSouthTextures(TTB.MOD_ID+":block/buildingTable/front")
 				.setBottomTexture(TTB.MOD_ID+":block/buildingTable/bottom"),
 			new ExampleBlock("block.building.table", TTB.MOD_CONFIG.newBlockID(), Material.stone)

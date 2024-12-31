@@ -1,4 +1,4 @@
-package deus.ttb.guis.supercraftingtable;
+package deus.ttb.guis.BlockBuilder;
 
 import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.entity.player.EntityPlayer;

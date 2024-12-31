@@ -2,7 +2,7 @@ package deus.ttb.mixin;
 
 
 import deus.ttb.guis.interfaces.mixin.IEntityPlayer;
-import deus.ttb.guis.supercraftingtable.ExampleBlockTileEntity;
+import deus.ttb.guis.BlockBuilder.ExampleBlockTileEntity;
 import net.minecraft.core.crafting.ICrafting;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.net.packet.Packet100OpenWindow;

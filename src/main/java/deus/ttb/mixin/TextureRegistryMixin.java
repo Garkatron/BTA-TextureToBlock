@@ -27,17 +27,22 @@ public class TextureRegistryMixin  {
 		//System.out.println("DADADA: "+id.value);
 
 
+		String str = id.value.substring(1);
+		String[] split2 = str.split("/");
+		AtlasStitcher atlas = stitcherMap.get(split2[0]);
+
 		if (id.value.startsWith("$")) {
 
-			String str = id.value.substring(1);
-			String[] split2 = str.split("/");
-			AtlasStitcher atlas = stitcherMap.get(split2[0]);
 
 
 			System.out.println("AAAAA: "+str.replace("¿",":"));
 			IconCoordinate result = ((AtlasStitcherAccessor) atlas).invokeGetTexture(new NamespaceID(TTB.MOD_ID, str.replace("¿",":")));
 
 			cir.setReturnValue(result);
+		} else if (id.value.startsWith("&")) {
+			IconCoordinate result = ((AtlasStitcherAccessor) atlas).invokeGetTexture(new NamespaceID(TTB.MOD_ID, str));
+			cir.setReturnValue(result);
+
 		}
 
 	}

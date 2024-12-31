@@ -1,4 +1,4 @@
-package deus.ttb.guis.supercraftingtable;
+package deus.ttb.guis.BlockBuilder;
 
 
 import deus.builib.guimanagement.AdvancedContainer;
