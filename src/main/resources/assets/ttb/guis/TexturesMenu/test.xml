@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<root xmlns="GUI-LIBRARY-HTML-SCHEMA" version="1.0">
+
+    <!-- Link to external styles -->
+    <link src="/assets/ttb/guis/TexturesMenu/styles.yaml"/>
+
+
+    <button id="backButton">
+        <label>Back</label>
+    </button>
+
+    <body>
+
+        <div group="panel">
+            <layout group="layouts">
+                <label id="mainTitle"> Textures </label>
+                <layout group="layouts" direction="horizontal">
+                    <button>
+                        <label> R </label>
+                    </button>
+                    <textField/>
+                </layout>
+                <scrollableLayout id="content">
+
+                </scrollableLayout>
+            </layout>
+
+
+        </div>
+
+    </body>
+
+</root>

@@ -1,0 +1,66 @@
+SharedProperties:
+  backgroundColor: transparent
+  scrollBarVisible: false
+
+Textures:
+  - id: background
+    path: /assets/guilib/textures/gui/themes/default/bgimages/dirth.png
+    mode: TILE
+    height: 16
+    width: 16
+
+Select:
+
+  - at: root > $backButton
+    selfPlacement: BOTTOM_RIGHT
+    width: 40px
+    height: 20px
+
+  - at: .fileButton
+    width: 100px
+    height: 20px
+
+  - at: body
+    childrenPlacement: CENTER
+    # backgroundImage: background
+
+  - at: .panel
+    backgroundImage: .$BUI.DEFAULT.PANEL.BGI
+    width: 220px
+    height: 85%
+
+  - at: button
+    childrenPlacement: CENTER
+    width: 80%
+    height: 20px
+
+  - at: layout
+    width: 100%
+    height: 70%
+    layoutCenterItems: true
+    layoutSpacing: 4px
+
+  - at: div > layout > layout > button
+    width: 20px
+    height: 20px
+
+  - at: div > layout > layout
+    height: 20px
+    layoutItemsFromCenter: true
+
+  - at: scrollablelayout
+    layoutCenterItems: true
+    scrollBarVisible: false
+    border: none
+    width: 90%
+
+  - at: .folder
+    backgroundColor: "FF0000"
+    layoutSpacing: 1px
+
+  - at: $mainTitle
+    selfPlacement: TOP
+
+  - at: $backButton
+    width: 20px
+    height: 20px

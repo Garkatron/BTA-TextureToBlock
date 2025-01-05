@@ -28,6 +28,21 @@ public class TTBTextureCollection {
 		resolvedTextures.put(Face.BOTTOM, resolveTexture(bottom, topBottom, all));
 	}
 
+	public TTBTextureCollection(@Nullable TTBTextureCollection ttbTextureCollection) {
+		resolvedTextures = new EnumMap<>(Face.class);
+		if (ttbTextureCollection != null) {
+			for (Face face : Face.values()) {
+				resolvedTextures.put(face, ttbTextureCollection.getTexture(face).orElse(null));
+			}
+		}
+	}
+
+
+	public TTBTextureCollection()
+	{
+		this(null, null, null, null, null, null, null, null, null, null, null);
+	}
+
 
 	private static String resolveTexture(String... textures) {
 		for (String texture : textures) {

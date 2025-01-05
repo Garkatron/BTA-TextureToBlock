@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class TTBDataSaver {
 
-	public static boolean createFile(String folderName, String filename, Map<String, Object> data) {
+	public static boolean createFile(String folderName, String filename, TTBBlockData ttbBlockData) {
 		File folder = new File(folderName);
 		if (!folder.exists() && !folder.mkdirs()) {
 			System.err.println("Can't create dir: " + folderName);
@@ -22,7 +22,7 @@ public class TTBDataSaver {
 		File file = new File(folderName + File.separator + filename);
 		try (FileWriter writer = new FileWriter(file)) {
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			String json = gson.toJson(data);
+			String json = gson.toJson(ttbBlockData);
 			writer.write(json);
 			return true;
 		} catch (IOException e) {

@@ -20,19 +20,13 @@ public class NamespaceIDMixin {
 			namespaceField.setAccessible(true);
 			String originalNamespace = (String) namespaceField.get(this);
 
-			//Field tres = NamespaceID.class.getDeclaredField("value");
-			//tres.setAccessible(true);
-
-			//String tres2 = (String) tres.get(this);
-
-
 			namespaceField.set(this, originalNamespace.startsWith("$") ? originalNamespace.substring(1) : originalNamespace);
-			//tres.set(this, tres2.replace("¿",":"));
 
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
+
 	@Inject(method = "<init>(Ljava/lang/String;)V", at = @At(value = "RETURN"))
 	private void test(String formattedString, CallbackInfo ci) {
 		try {
@@ -40,13 +34,7 @@ public class NamespaceIDMixin {
 			namespaceField.setAccessible(true);
 			String originalNamespace = (String) namespaceField.get(this);
 
-			//Field tres = NamespaceID.class.getDeclaredField("value");
-			//tres.setAccessible(true);
-
-			//String tres2 = (String) tres.get(this);
-
 			namespaceField.set(this, originalNamespace.startsWith("$") ? originalNamespace.substring(1) : originalNamespace);
-			//tres.set(this, tres2.replace("¿",":"));
 
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			e.printStackTrace();

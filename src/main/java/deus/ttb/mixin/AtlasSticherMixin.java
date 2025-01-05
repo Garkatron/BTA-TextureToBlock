@@ -21,8 +21,6 @@ public class AtlasSticherMixin {
 	@Redirect(method = "generateAtlas()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/texturepack/TexturePackList;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"), remap = false)
 	private InputStream test(TexturePackList instance, String stream) throws FileNotFoundException {
 
-		System.out.println("AAA: " +stream);
-
 		if (stream.contains("¿")) {
 			System.out.println("STREAM: " + stream);
 			int questionMarkIndex = stream.indexOf("¿");
@@ -34,6 +32,7 @@ public class AtlasSticherMixin {
 			}
 
 			System.out.println("LIMPIO: " + cleanedStream);
+			System.out.println("- - - - - - - > ¿ PATH < - - - - - - -");
 
 			return new FileInputStream(cleanedStream);
 		} else if (stream.contains("&")) {
@@ -45,11 +44,13 @@ public class AtlasSticherMixin {
 			String clean = cleanedStream.substring(0, cleanedStream.length() - 4).replace("&", "");
 
 			System.out.println("2LIMPIO: " + clean);
+			System.out.println("- - - - - - - > & PATH < - - - - - - -");
 
 			try {
 				return new FileInputStream(clean.substring(1));
+
 			} catch (FileNotFoundException e) {
-				System.err.println("Archivo no encontrado: " + clean);
+				System.err.println("- - - - - - - > FILE NOT FOUND < - - - - - - -" + clean);
 				throw e;
 			}
 		}

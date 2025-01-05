@@ -33,23 +33,28 @@ public class TextureRegistryMixin  {
 
 		if (id.value.startsWith("$")) {
 
-
-
-			System.out.println("AAAAA: "+str.replace("¿",":"));
+			System.out.println("[GET TEXTURE]: $");
 			IconCoordinate result = ((AtlasStitcherAccessor) atlas).invokeGetTexture(new NamespaceID(TTB.MOD_ID, str.replace("¿",":")));
 
 			cir.setReturnValue(result);
 		} else if (id.value.startsWith("&")) {
+
+			System.out.println("[GET TEXTURE]: &");
+
 			IconCoordinate result = ((AtlasStitcherAccessor) atlas).invokeGetTexture(new NamespaceID(TTB.MOD_ID, str));
 			cir.setReturnValue(result);
 
 		}
 
+
 	}
 
+	/*
 	@Inject(method = "hasTexture(Lnet/minecraft/core/util/collection/NamespaceID;)Z", at=@At("HEAD"), remap = false, cancellable = true)
 	private static void test2(NamespaceID id, CallbackInfoReturnable<Boolean> cir) {
 
 	}
+	*/
+
 
 }
