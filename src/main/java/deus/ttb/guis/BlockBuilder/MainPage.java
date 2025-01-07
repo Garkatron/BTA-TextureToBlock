@@ -7,6 +7,7 @@ import deus.builib.nodes.Root;
 import deus.builib.nodes.stylesystem.TextureManager;
 import deus.builib.nodes.types.interaction.Button;
 import deus.builib.nodes.types.interaction.TextField;
+import deus.builib.nodes.types.representation.Label;
 import deus.builib.nodes.types.semantic.Div;
 import deus.ttb.TTB;
 import deus.ttb.block.TTBBlocks;
@@ -15,6 +16,7 @@ import deus.ttb.tools.TTBDataSaver;
 import deus.ttb.tools.TTBTextureCollection;
 
 import java.io.File;
+import java.util.List;
 
 import static deus.ttb.util.blockanditems.BlockMaker.genericBlockBuilder;
 
@@ -60,7 +62,13 @@ public class MainPage extends Page {
 			if (button2 != null) {
 				button2.setToggleMode(true);
 				button2.setOnReleaseAction(
-					(n) -> saveBlocks = button2.isOn()
+					(n) -> {
+						saveBlocks = button2.isOn();
+						TTB.LOGGER.info("Toggled: {}", saveBlocks);
+						n.setChildren(List.of(new Label().setText(
+							List.of("Save: "+saveBlocks)
+						)));
+					}
 				);
 			}
 
