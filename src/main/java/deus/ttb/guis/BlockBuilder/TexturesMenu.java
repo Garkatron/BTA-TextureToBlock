@@ -94,23 +94,8 @@ public class TexturesMenu extends Page {
 	private Button createFileButton(File file) {
 		return (Button) new Button()
 			.setOnReleaseAction((b) -> {
-				Map<String, Object> styles = new HashMap<>();
 
-				String str = "TTB:TEXTURE:BLOCK_BUILDER:DYN:"+ file.getName();
-
-				TextureManager.getInstance().addTexture(
-					str, new TextureProperties(file.getAbsolutePath(),16,16, new TextureProperties.Border(0,0,0,0), false, TextureMode.STRETCH)
-				);
-
-				styles.put("backgroundImage", str);
-				styles.put("width", "100%");
-				styles.put("height", "100%");
-
-				Div div = new Div();
-				div.applyStyle(styles);
-				BlockBuilderGui.currentButton.setChildren(new ArrayList<>());
-				BlockBuilderGui.currentButton.addChildren(div);
-
+				addImageToButton(BlockBuilderGui.currentButton, file);
 
 				router.backPreviousPage();
 			})
@@ -122,5 +107,23 @@ public class TexturesMenu extends Page {
 
 	private boolean shouldAddFolderToContent(String currentFilter, String folder) {
 		return currentFilter.isEmpty() || currentFilter.isBlank() || currentFilter.equals(folder);
+	}
+
+	public static void addImageToButton(Button b, File file) {
+		String str = "TTB:TEXTURE:BLOCK_BUILDER:DYN:"+ file.getName();
+		Map<String, Object> styles = new HashMap<>();
+
+		TextureManager.getInstance().addTexture(
+			str, new TextureProperties(file.getAbsolutePath(),16,16, new TextureProperties.Border(0,0,0,0), false, TextureMode.STRETCH)
+		);
+
+		styles.put("backgroundImage", str);
+		styles.put("width", "100%");
+		styles.put("height", "100%");
+
+		Div div = new Div();
+		div.applyStyle(styles);
+		b.setChildren(new ArrayList<>());
+		b.addChildren(div);
 	}
 }

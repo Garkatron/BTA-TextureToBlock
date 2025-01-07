@@ -44,7 +44,7 @@ public class TTBBlocks {
 				// $ttb:block/C¿/Users/masit/IdeaProjects/BTA-TextureToBlock/run/TTB/textures/testblock/top.png
 				// $ttb:block/C¿\Users\masit\IdeaProjects\BTA-TextureToBlock\src\main\resources\assets\ttb\textures\block\buildingTable\top.png
 				// ttb:block/&../run/TTB/ttb/bottom.png
-				.setTopTexture("$ttb:block/C¿/Users/masit/IdeaProjects/BTA-TextureToBlock/run/TTB/textures/testblock/top.png")
+				.setTopTexture(TTB.MOD_ID+":block/buildingTable/top")
 				.setNorthSouthTextures(TTB.MOD_ID+":block/buildingTable/front")
 				.setBottomTexture(TTB.MOD_ID+":block/buildingTable/bottom"),
 			new ExampleBlock("block.building.table", TTB.MOD_CONFIG.newBlockID(), Material.stone)
@@ -52,15 +52,35 @@ public class TTBBlocks {
 
 	}
 
-	public static void makeBlockDynamic(TTBBlockData ttbBlockData, BlockBuilder blockBuilder) {
-		// ? Formatting path
-		String path = ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.TOP).orElse("test");
+	private static String formatPath(String path) {
 		path = path.replace(":","¿");
 		String path2 = "$ttb:block/"+path;
+		return path2;
+	}
+
+	public static void makeBlockDynamic(TTBBlockData ttbBlockData, BlockBuilder blockBuilder) {
+		// ? Formatting path
+		String top = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.TOP).orElse("test"));
+		String bottom = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.BOTTOM).orElse("test"));
+
+		String back = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.BACK).orElse("test"));
+		String front = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.FRONT).orElse("test"));
+
+		String left = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.LEFT).orElse("test"));
+		String right = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.RIGHT).orElse("test"));
 
 		// ? Creating the block
 		dynamicBlocks.add(make(
-			blockBuilder.setTextures(path2),
+			blockBuilder
+				.setTopTexture(top)
+				.setBottomTexture(bottom)
+
+				.setSouthTexture(back)
+				.setNorthTexture(front)
+
+				.setEastTexture(left)
+				.setWestTexture(right)
+			,
 			new Block(ttbBlockData.name(), ttbBlockData.id(), Material.stone)
 		));
 

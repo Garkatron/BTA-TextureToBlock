@@ -1,9 +1,11 @@
 package deus.ttb.guis.BlockBuilder;
 
+import deus.builib.interfaces.nodes.INode;
 import deus.builib.nodes.Root;
 import deus.builib.nodes.stylesystem.TextureManager;
 import deus.builib.nodes.types.interaction.Button;
 import deus.builib.nodes.types.interaction.TextField;
+import deus.builib.nodes.types.representation.Label;
 import deus.builib.nodes.types.semantic.Div;
 import deus.ttb.TTB;
 import deus.builib.guimanagement.routing.Page;
@@ -13,6 +15,8 @@ import deus.ttb.tools.PathUtils;
 import deus.ttb.tools.TTBBlockData;
 import deus.ttb.tools.TTBDataSaver;
 import deus.ttb.tools.TTBTextureCollection;
+import java.io.File;
+import java.util.List;
 
 import static deus.ttb.util.blockanditems.BlockMaker.genericBlockBuilder;
 
@@ -32,17 +36,25 @@ public class MainPage extends Page {
 
 			setupFaceButton(doc, "FRONT");
 			setupFaceButton(doc, "BACK");
+
 			setupFaceButton(doc, "TOP");
 			setupFaceButton(doc, "BOTTOM");
+
 			setupFaceButton(doc, "LEFT");
 			setupFaceButton(doc, "RIGHT");
 
 			Button button = (Button) doc.getNodeById("createButton");
 			if (button != null) {
 				button.setOnReleaseAction(
-					(n) -> {
-						createBlock();
-					}
+					(n) -> createBlock()
+				);
+			}
+
+			Button button3 = (Button) doc.getNodeById("importButton");
+			if (button3 != null) {
+				button3.setOnReleaseAction(
+					(n) -> loadData()
+
 				);
 			}
 
@@ -50,15 +62,55 @@ public class MainPage extends Page {
 			if (button2 != null) {
 				button2.setToggleMode(true);
 				button2.setOnReleaseAction(
-					(n) -> {
-						saveBlocks = button2.isOn();
-						System.out.println("TOGGLED: " + saveBlocks);
-					}
+					(n) -> saveBlocks = button2.isOn()
 				);
 			}
 
+			Button button4 = (Button) doc.getNodeById("clearButton");
+			if (button4 != null) {
+				button4.setToggleMode(true);
+				button4.setOnReleaseAction(
+					(n) -> reload()
+				);
+			}
+
+
 		});
 	}
+
+	private void loadData() {
+		TextField nameTextField = (TextField) getDocument().getNodeById("nameTextField");
+
+		TTBBlockData data = TTBDataSaver.readFile(TTB.TTBBlocksFolder.getAbsolutePath(), nameTextField.getText());
+
+
+		if (data == null) {
+			System.err.println("Error: No se pudo cargar el archivo " + nameTextField.getText());
+			return;
+		}
+
+		Root doc = getDocument();
+		Button frontNode = (Button) doc.getNodeById("FRONT");
+		Button backNode = (Button) doc.getNodeById("BACK");
+		Button rightNode = (Button) doc.getNodeById("RIGHT");
+		Button leftNode = (Button) doc.getNodeById("LEFT");
+		Button topNode = (Button) doc.getNodeById("TOP");
+		Button bottomNode = (Button) doc.getNodeById("BOTTOM");
+
+		TTBTextureCollection textureCollection = data.textureCollection();
+
+		TexturesMenu.addImageToButton(frontNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.FRONT).orElse("")));
+		TexturesMenu.addImageToButton(backNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.BACK).orElse("")));
+		TexturesMenu.addImageToButton(rightNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.RIGHT).orElse("")));
+		TexturesMenu.addImageToButton(leftNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.LEFT).orElse("")));
+		TexturesMenu.addImageToButton(topNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.TOP).orElse("")));
+		TexturesMenu.addImageToButton(bottomNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.BOTTOM).orElse("")));
+
+		nameTextField.setText(data.name());
+
+
+	}
+
 
 	private void createBlock() {
 		Root doc = getDocument();
@@ -112,19 +164,19 @@ public class MainPage extends Page {
 		}
 
 		if (!b.getChildren().isEmpty()) {
-			Div div = (Div) b.getChildren().get(0);
-			if (div != null) {
+			INode c = b.getChildren().get(0);
+			if (c instanceof Div div) {
 				String backgroundImage = (String) div.getStyle().getOrDefault("backgroundImage", "");
 				if (!backgroundImage.isEmpty()) {
 					TTB.LOGGER.info("{} Background image found: {}", b.getId(), backgroundImage);
 					return TextureManager.getInstance().getTexture(backgroundImage).path();
 				}
-				TTB.LOGGER.error("{} No background image defined in DIV.", b.getId());
-				return "no background image";
-			} else {
-				TTB.LOGGER.error("{} DIV IS NULL", b.getId());
-				return "div null";
+
 			}
+			TTB.LOGGER.error("{} No background image defined in DIV.", b.getId());
+			return "no background image";
+
+
 		}
 
 		TTB.LOGGER.error("{} DIV DOESN'T EXIST", b.getId());

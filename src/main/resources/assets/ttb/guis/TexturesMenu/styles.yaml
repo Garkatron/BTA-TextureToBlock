@@ -55,7 +55,6 @@ Select:
     width: 90%
 
   - at: .folder
-    backgroundColor: "FF0000"
     layoutSpacing: 1px
 
   - at: $mainTitle
