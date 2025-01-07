@@ -3,6 +3,7 @@ package deus.ttb.tools;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import deus.ttb.TTB;
 
 import javax.annotation.processing.FilerException;
 import java.io.*;
@@ -52,18 +53,29 @@ public class TTBDataSaver {
 		}
 	}
 
-	public static String encodeImageToBase64(String imagePath) throws IOException {
+	public static String encodeImageToBase64(String imagePath) {
+		TTB.LOGGER.info("ENCODING: {}", imagePath);
 		File file = new File(imagePath);
 		try (FileInputStream fis = new FileInputStream(file)) {
 			byte[] imageBytes = fis.readAllBytes();
 			return Base64.getEncoder().encodeToString(imageBytes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
-	public static void decodeBase64ToImage(String base64Image, String outputPath) throws IOException {
+	public static void decodeBase64ToImage(String base64Image, String outputPath)  {
 		byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
 		try (FileOutputStream fos = new FileOutputStream(outputPath)) {
 			fos.write(decodedBytes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
+
+	public static InputStream decodeBase64ToInputStream(String base64Image) {
+		byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
+		return new ByteArrayInputStream(decodedBytes);
+	}
+
 }

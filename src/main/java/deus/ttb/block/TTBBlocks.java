@@ -4,6 +4,7 @@ import deus.builib.gssl.Signal;
 import deus.ttb.TTB;
 import deus.ttb.guis.BlockBuilder.ExampleBlock;
 import deus.ttb.tools.TTBBlockData;
+import deus.ttb.tools.TTBDataSaver;
 import deus.ttb.tools.TTBTextureCollection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.RenderEngine;
@@ -60,26 +61,45 @@ public class TTBBlocks {
 
 	public static void makeBlockDynamic(TTBBlockData ttbBlockData, BlockBuilder blockBuilder) {
 		// ? Formatting path
-		String top = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.TOP).orElse("test"));
-		String bottom = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.BOTTOM).orElse("test"));
+		String top = ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.TOP).orElse("test");
+		String bottom = ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.BOTTOM).orElse("test");
 
-		String back = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.BACK).orElse("test"));
-		String front = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.FRONT).orElse("test"));
+		String back = ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.BACK).orElse("test");
+		String front = ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.FRONT).orElse("test");
 
-		String left = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.LEFT).orElse("test"));
-		String right = formatPath(ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.RIGHT).orElse("test"));
+		String left = ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.LEFT).orElse("test");
+		String right = ttbBlockData.textureCollection().getTexture(TTBTextureCollection.Face.RIGHT).orElse("test");
+
+		// ? Cache
+		String topPath = TTB.TTBTexturesFolder+"/"+ttbBlockData.name()+".top.png";
+		TTBDataSaver.decodeBase64ToImage(top, topPath);
+
+		String bottomPath = TTB.TTBTexturesFolder+"/"+ttbBlockData.name()+".bottom.png";
+		TTBDataSaver.decodeBase64ToImage(bottom, bottomPath);
+
+		String backPath = TTB.TTBTexturesFolder+"/"+ttbBlockData.name()+".back.png";
+		TTBDataSaver.decodeBase64ToImage(back, backPath);
+
+		String frontPath = TTB.TTBTexturesFolder+"/"+ttbBlockData.name()+".front.png";
+		TTBDataSaver.decodeBase64ToImage(front, frontPath);
+
+		String leftPath = TTB.TTBTexturesFolder+"/"+ttbBlockData.name()+".left.png";
+		TTBDataSaver.decodeBase64ToImage(left, leftPath);
+
+		String rightPath = TTB.TTBTexturesFolder+"/"+ttbBlockData.name()+".right.png";
+		TTBDataSaver.decodeBase64ToImage(right, rightPath);
 
 		// ? Creating the block
 		dynamicBlocks.add(make(
 			blockBuilder
-				.setTopTexture(top)
-				.setBottomTexture(bottom)
+				.setTopTexture(formatPath(topPath))
+				.setBottomTexture(formatPath(bottomPath))
 
-				.setSouthTexture(back)
-				.setNorthTexture(front)
+				.setSouthTexture(formatPath(backPath))
+				.setNorthTexture(formatPath(frontPath))
 
-				.setEastTexture(left)
-				.setWestTexture(right)
+				.setEastTexture(formatPath(leftPath))
+				.setWestTexture(formatPath(rightPath))
 			,
 			new Block(ttbBlockData.name(), ttbBlockData.id(), Material.stone)
 		));

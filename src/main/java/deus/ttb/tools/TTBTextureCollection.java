@@ -1,6 +1,7 @@
 package deus.ttb.tools;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class TTBTextureCollection {
 	private static String resolveTexture(String... textures) {
 		for (String texture : textures) {
 			if (texture != null) {
-				return texture;
+				return TTBDataSaver.encodeImageToBase64(texture);
 			}
 		}
 		return null;

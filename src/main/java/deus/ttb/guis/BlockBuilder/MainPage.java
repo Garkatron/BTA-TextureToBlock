@@ -1,29 +1,27 @@
 package deus.ttb.guis.BlockBuilder;
 
+import deus.builib.guimanagement.routing.Page;
+import deus.builib.guimanagement.routing.Router;
 import deus.builib.interfaces.nodes.INode;
 import deus.builib.nodes.Root;
 import deus.builib.nodes.stylesystem.TextureManager;
 import deus.builib.nodes.types.interaction.Button;
 import deus.builib.nodes.types.interaction.TextField;
-import deus.builib.nodes.types.representation.Label;
 import deus.builib.nodes.types.semantic.Div;
 import deus.ttb.TTB;
-import deus.builib.guimanagement.routing.Page;
-import deus.builib.guimanagement.routing.Router;
 import deus.ttb.block.TTBBlocks;
-import deus.ttb.tools.PathUtils;
 import deus.ttb.tools.TTBBlockData;
 import deus.ttb.tools.TTBDataSaver;
 import deus.ttb.tools.TTBTextureCollection;
+
 import java.io.File;
-import java.util.List;
 
 import static deus.ttb.util.blockanditems.BlockMaker.genericBlockBuilder;
 
 
 public class MainPage extends Page {
 
-	private static boolean saveBlocks = false;
+	private static boolean saveBlocks = true;
 
 	public MainPage(Router router) {
 		super(TTB.class, router);
@@ -79,48 +77,67 @@ public class MainPage extends Page {
 	}
 
 	private void loadData() {
-		TextField nameTextField = (TextField) getDocument().getNodeById("nameTextField");
+		try {
+			TextField nameTextField = (TextField) getDocument().getNodeById("nameTextField");
 
-		TTBBlockData data = TTBDataSaver.readFile(TTB.TTBBlocksFolder.getAbsolutePath(), nameTextField.getText());
+			TTBBlockData data = TTBDataSaver.readFile(TTB.TTBBlocksFolder.getAbsolutePath(), nameTextField.getText());
 
+			if (data == null) {
+				System.err.println("Error loading the file" + nameTextField.getText());
+				return;
+			}
 
-		if (data == null) {
-			System.err.println("Error: No se pudo cargar el archivo " + nameTextField.getText());
-			return;
+			Root doc = getDocument();
+			Button frontNode = (Button) doc.getNodeById("FRONT");
+			Button backNode = (Button) doc.getNodeById("BACK");
+			Button rightNode = (Button) doc.getNodeById("RIGHT");
+			Button leftNode = (Button) doc.getNodeById("LEFT");
+			Button topNode = (Button) doc.getNodeById("TOP");
+			Button bottomNode = (Button) doc.getNodeById("BOTTOM");
+
+			TTBTextureCollection textureCollection = data.textureCollection();
+
+			String blockFolderPath = TTB.TTBTexturesFolder.getPath() + "/" + data.name();
+			String FRONT_PATH = blockFolderPath + ".front.png";
+			String BACK_PATH = blockFolderPath + ".back.png";
+			String RIGHT_PATH = blockFolderPath + ".right.png";
+			String LEFT_PATH = blockFolderPath + ".left.png";
+			String TOP_PATH = blockFolderPath + ".top.png";
+			String BOTTOM_PATH = blockFolderPath + ".bottom.png";
+
+			TTBDataSaver.decodeBase64ToImage(textureCollection.getTexture(TTBTextureCollection.Face.FRONT).orElse(""), FRONT_PATH);
+			TTBDataSaver.decodeBase64ToImage(textureCollection.getTexture(TTBTextureCollection.Face.BACK).orElse(""), BACK_PATH);
+			TTBDataSaver.decodeBase64ToImage(textureCollection.getTexture(TTBTextureCollection.Face.RIGHT).orElse(""), RIGHT_PATH);
+			TTBDataSaver.decodeBase64ToImage(textureCollection.getTexture(TTBTextureCollection.Face.LEFT).orElse(""), LEFT_PATH);
+			TTBDataSaver.decodeBase64ToImage(textureCollection.getTexture(TTBTextureCollection.Face.TOP).orElse(""), TOP_PATH);
+			TTBDataSaver.decodeBase64ToImage(textureCollection.getTexture(TTBTextureCollection.Face.BOTTOM).orElse(""), BOTTOM_PATH);
+
+			TexturesMenu.addImageToButton(frontNode, new File(FRONT_PATH));
+			TexturesMenu.addImageToButton(backNode, new File(BACK_PATH));
+			TexturesMenu.addImageToButton(rightNode, new File(RIGHT_PATH));
+			TexturesMenu.addImageToButton(leftNode, new File(LEFT_PATH));
+			TexturesMenu.addImageToButton(topNode, new File(TOP_PATH));
+			TexturesMenu.addImageToButton(bottomNode, new File(BOTTOM_PATH));
+
+			nameTextField.setText(data.name());
+
+			System.out.println("loaded data successfully: " + data.name());
+		} catch (Exception e) {
+			System.err.println("Error loading files: " + e.getMessage());
+			e.printStackTrace();
 		}
-
-		Root doc = getDocument();
-		Button frontNode = (Button) doc.getNodeById("FRONT");
-		Button backNode = (Button) doc.getNodeById("BACK");
-		Button rightNode = (Button) doc.getNodeById("RIGHT");
-		Button leftNode = (Button) doc.getNodeById("LEFT");
-		Button topNode = (Button) doc.getNodeById("TOP");
-		Button bottomNode = (Button) doc.getNodeById("BOTTOM");
-
-		TTBTextureCollection textureCollection = data.textureCollection();
-
-		TexturesMenu.addImageToButton(frontNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.FRONT).orElse("")));
-		TexturesMenu.addImageToButton(backNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.BACK).orElse("")));
-		TexturesMenu.addImageToButton(rightNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.RIGHT).orElse("")));
-		TexturesMenu.addImageToButton(leftNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.LEFT).orElse("")));
-		TexturesMenu.addImageToButton(topNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.TOP).orElse("")));
-		TexturesMenu.addImageToButton(bottomNode, new File(textureCollection.getTexture(TTBTextureCollection.Face.BOTTOM).orElse("")));
-
-		nameTextField.setText(data.name());
-
-
 	}
 
 
 	private void createBlock() {
 		Root doc = getDocument();
 
-		String frontTexture = getTextureFromButton((Button) doc.getNodeById("FRONT"));
-		String backTexture = getTextureFromButton((Button) doc.getNodeById("BACK"));
-		String rightTexture = getTextureFromButton((Button) doc.getNodeById("RIGHT"));
-		String leftTexture = getTextureFromButton((Button) doc.getNodeById("LEFT"));
-		String topTexture = getTextureFromButton((Button) doc.getNodeById("TOP"));
-		String bottomTexture = getTextureFromButton((Button) doc.getNodeById("BOTTOM"));
+		String frontTexturePath = getTextureFromButton((Button) doc.getNodeById("FRONT"));
+		String backTexturePath = getTextureFromButton((Button) doc.getNodeById("BACK"));
+		String rightTexturePath = getTextureFromButton((Button) doc.getNodeById("RIGHT"));
+		String leftTexturePath = getTextureFromButton((Button) doc.getNodeById("LEFT"));
+		String topTexturePath = getTextureFromButton((Button) doc.getNodeById("TOP"));
+		String bottomTexturePath = getTextureFromButton((Button) doc.getNodeById("BOTTOM"));
 
 		TextField nameTextField = (TextField) doc.getNodeById("nameTextField");
 
@@ -130,37 +147,31 @@ public class MainPage extends Page {
 			TTB.MOD_CONFIG.newBlockID(),
 			nameTextField.getText(),
 			new TTBTextureCollection(
-				frontTexture,
-				backTexture,
-				rightTexture,
-				leftTexture,
-				topTexture,
-				bottomTexture,
-				null, // "all"
-				null, // "topBottom"
-				null, // "sides"
-				null, // "frontBack"
-				null  // "leftRight"
+				frontTexturePath,
+				backTexturePath,
+				rightTexturePath,
+				leftTexturePath,
+				topTexturePath,
+				bottomTexturePath,
+				null,
+				null,
+				null,
+				null,
+				null
 			)
 		);
 
 		if (saveBlocks) {
-			saveBlock(data);
+			TTBDataSaver.createFile(TTB.TTBBlocksFolder.getAbsolutePath(), data.name(), data);
 		}
 
 		TTBBlocks.makeBlockDynamic(data, genericBlockBuilder);
 	}
 
-	private void saveBlock(TTBBlockData data) {
-		TTBDataSaver.createFile(TTB.TTBBlocksFolder.getAbsolutePath(), data.name(), data);
-
-	}
-
-
 	private String getTextureFromButton(Button b) {
 		if (b == null) {
 			TTB.LOGGER.error("BUTTON IS NULL");
-			return "button null";
+			return null;
 		}
 
 		if (!b.getChildren().isEmpty()) {
@@ -174,15 +185,14 @@ public class MainPage extends Page {
 
 			}
 			TTB.LOGGER.error("{} No background image defined in DIV.", b.getId());
-			return "no background image";
+			return null;
 
 
 		}
 
 		TTB.LOGGER.error("{} DIV DOESN'T EXIST", b.getId());
-		return "div doesn't exist";
+		return null;
 	}
-
 
 	private void setupFaceButton(Root doc, String buttonId) {
 		Button button = (Button) doc.getNodeById(buttonId);
